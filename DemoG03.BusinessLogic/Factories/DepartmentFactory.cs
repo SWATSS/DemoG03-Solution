@@ -19,7 +19,7 @@ namespace DemoG03.BusinessLogic.Factories
                 Code = department.Code,
                 Description = department.Description,
                 CreatedBy = department.CreatedBy,
-                DateOfCreation = DateOnly.FromDateTime(department.CreatedOn ?? DateTime.Now),;
+                DateOfCreation = DateOnly.FromDateTime(department.CreatedOn ?? DateTime.Now),
                 IsDeleted = department.IsDeleted
             };
         }
