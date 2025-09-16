@@ -17,10 +17,10 @@ namespace DemoG03.DataAccess.Data.Contexts
         }
 
         public DbSet<Department> Departments { get; set; }
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("ConnectionString");
-        }
+        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        //{
+        //    optionsBuilder.UseSqlServer("ConnectionString");
+        //}
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

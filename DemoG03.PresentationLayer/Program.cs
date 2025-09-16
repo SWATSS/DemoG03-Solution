@@ -27,7 +27,8 @@ namespace DemoG03.PresentationLayer
 
             var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
+            #region Configure the HTTP request pipeline.
+            // 
             if (!app.Environment.IsDevelopment())
             {
                 app.UseExceptionHandler("/Home/Error");
@@ -46,6 +47,8 @@ namespace DemoG03.PresentationLayer
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
+            Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection")); 
+            #endregion
 
             app.Run();
         }
