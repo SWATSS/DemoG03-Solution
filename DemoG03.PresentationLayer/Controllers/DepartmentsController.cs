@@ -107,5 +107,55 @@ namespace DemoG03.PresentationLayer.Controllers
                 DateofCreation = (DateOnly)department.DateOfCreation
             });
         }
+
+        [HttpPost]
+        public IActionResult Edit([FromRoute] int id, DepartmentViewModel departmentVM)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(departmentVM);
+            }
+            var message = string.Empty;
+            try
+            {
+                var result = _departmentServices.UpdateDepartment(new UpdatedDepartmentDto()
+                {
+                    Id = id,
+                    Code = departmentVM.Code,
+                    Name = departmentVM.Name,
+                    Description = departmentVM.Description,
+                    DateOfCreation = departmentVM.DateofCreation
+                });
+                if (result > 0)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    message = "Department Cant Be Updated";
+                    return View(departmentVM);
+                }
+            }
+            catch (Exception ex)
+            {
+                message = _env.IsDevelopment() ? ex.Message : "Department Cant Be Updated";
+            }
+            return View(departmentVM);
+        }
+
+
+        [HttpGet]
+        public IActionResult Delete(int? id)
+        {
+            if (id is null)
+                return NotFound(); // 404
+            var department = _departmentServices.GetDepartmentById(id.Value);
+            if (department is null)
+                return BadRequest(); // 400
+
+            return View(department);
+        }
     }
 }
+
+
