@@ -148,13 +148,45 @@ namespace DemoG03.PresentationLayer.Controllers
         public IActionResult Delete(int? id)
         {
             if (id is null)
+            {
                 return NotFound(); // 404
+            }
+
             var department = _departmentServices.GetDepartmentById(id.Value);
+
             if (department is null)
-                return BadRequest(); // 400
+            {
+                return NotFound(); // 404
+            }
 
             return View(department);
         }
+        [HttpPost]
+        public IActionResult Delete(int id)
+        {
+
+            var message = string.Empty;
+            try
+            {
+                var result = _departmentServices.DeleteDepartment(id);
+                if (result)
+                {
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    message = "an Error happened when deleting the department";
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                message = _env.IsDevelopment() ? ex.Message : "an Error happened when deleting the department";
+            }
+            return View(nameof(Index));
+
+        }
+
     }
 }
 

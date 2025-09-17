@@ -1,5 +1,5 @@
 ﻿using DemoG03.DataAccess.Data.Contexts;
-using DemoG03.DataAccess.Models;
+using DemoG03.DataAccess.Models.Departments;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

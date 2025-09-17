@@ -1,4 +1,4 @@
-﻿using DemoG03.DataAccess.Models;
+﻿using DemoG03.DataAccess.Models.Departments;
 
 namespace DemoG03.DataAccess.Repositories
 {
