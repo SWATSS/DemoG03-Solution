@@ -1,6 +1,6 @@
-﻿using DemoG03.BusinessLogic.DataTransferObjects;
+﻿using DemoG03.BusinessLogic.DTOs.Departments;
 
-namespace DemoG03.BusinessLogic.Services
+namespace DemoG03.BusinessLogic.Services.Interfaces
 {
     public interface IDepartmentServices
     {

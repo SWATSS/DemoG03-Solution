@@ -1,5 +1,6 @@
-﻿using DemoG03.BusinessLogic.DataTransferObjects;
+﻿using DemoG03.BusinessLogic.DTOs.Departments;
 using DemoG03.BusinessLogic.Factories;
+using DemoG03.BusinessLogic.Services.Interfaces;
 using DemoG03.DataAccess.Models;
 using DemoG03.DataAccess.Repositories.Departments;
 using System;
@@ -8,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DemoG03.BusinessLogic.Services
+namespace DemoG03.BusinessLogic.Services.Classes
 {
     public class DepartmentServices : IDepartmentServices
     {

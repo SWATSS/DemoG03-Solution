@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DemoG03.BusinessLogic.DataTransferObjects
+namespace DemoG03.BusinessLogic.DTOs.Departments
 {
     public class UpdatedDepartmentDto
     {

@@ -1,4 +1,4 @@
-﻿using DemoG03.BusinessLogic.DataTransferObjects;
+﻿using DemoG03.BusinessLogic.DTOs.Departments;
 using DemoG03.DataAccess.Models.Departments;
 using System;
 using System.Collections.Generic;

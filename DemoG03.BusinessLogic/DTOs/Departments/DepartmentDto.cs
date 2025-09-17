@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DemoG03.BusinessLogic.DataTransferObjects
+namespace DemoG03.BusinessLogic.DTOs.Departments
 {
-    public class CreatedDepartmentDto
+    public class DepartmentDto
     {
+        public int Id { get; set; }
         public string Name { get; set; } = null!;
         public string Code { get; set; } = null!;
         public string Description { get; set; } = string.Empty!;
         public DateOnly DateOfCreation { get; set; }
-
     }
 }
