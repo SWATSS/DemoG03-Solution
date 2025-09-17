@@ -1,6 +1,6 @@
 using DemoG03.BusinessLogic.Services;
 using DemoG03.DataAccess.Data.Contexts;
-using DemoG03.DataAccess.Repositories;
+using DemoG03.DataAccess.Repositories.Departments;
 using Microsoft.EntityFrameworkCore;
 
 namespace DemoG03.PresentationLayer
