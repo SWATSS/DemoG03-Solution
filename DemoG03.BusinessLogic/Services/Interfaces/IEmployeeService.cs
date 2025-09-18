@@ -12,5 +12,7 @@ namespace DemoG03.BusinessLogic.Services.Interfaces
         IEnumerable<EmployeeDto> GetAllEmployees(bool withTracking = false);
         EmployeeDetailsDto? GetEmployeeById(int id);
         int CreateEmployee(CreatedEmplyeeDto emplyeeDto);
+        int UpdateEmployee(UpdatedEmployeeDto employeeDto);
+        bool DeleteEmployee(int id);
     }
 }
