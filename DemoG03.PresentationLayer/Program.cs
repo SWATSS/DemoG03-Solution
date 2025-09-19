@@ -4,6 +4,7 @@ using DemoG03.BusinessLogic.Services.Interfaces;
 using DemoG03.DataAccess.Data.Contexts;
 using DemoG03.DataAccess.Repositories.Departments;
 using DemoG03.DataAccess.Repositories.Employees;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace DemoG03.PresentationLayer
@@ -15,7 +16,10 @@ namespace DemoG03.PresentationLayer
             var builder = WebApplication.CreateBuilder(args);
 
             #region Add services to the container.
-            builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews(options =>
+            {
+                options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
+            });
 
             //builder.Services.AddScoped<ApplicationDbContext>();// We Dont Use This In DbContext
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
@@ -54,7 +58,7 @@ namespace DemoG03.PresentationLayer
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");
-            Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection")); 
+            Console.WriteLine(builder.Configuration.GetConnectionString("DefaultConnection"));
             #endregion
 
             app.Run();

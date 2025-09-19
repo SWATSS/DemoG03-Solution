@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -34,6 +35,10 @@ namespace DemoG03.DataAccess.Repositories.Generics
             }
         }
 
+        public IEnumerable<TResult> GetAll<TResult>(Expression<Func<TEntity, TResult>> selector)
+        {
+            return _dbContext.Set<TEntity>().Where(E => E.IsDeleted != true).Select(selector).ToList(); // Tolist (Encapsulation) so it will run here not outside the repo
+        }
 
         public TEntity? GetById(int id)
         {
@@ -58,5 +63,6 @@ namespace DemoG03.DataAccess.Repositories.Generics
             _dbContext.Remove(entity);
             return _dbContext.SaveChanges();
         }
+
     }
 }

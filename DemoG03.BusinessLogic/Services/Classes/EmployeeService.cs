@@ -27,6 +27,17 @@ namespace DemoG03.BusinessLogic.Services.Classes
             var employees = _employeeRepository.GetAll(withTracking);
             var employeesToReturn = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeDto>>(employees);
 
+            ///var employees = _employeeRepository.GetAll(E => new EmployeeDto()
+            ///{
+            ///    Id = E.Id,
+            ///    Name = E.Name,
+            ///    Age = E.Age,
+            ///    Email = E.Email,
+            ///    Salary = E.Salary
+            ///});
+            ///}).Where(E => E.Age > 24); It Will Proccessed after BC (Encapsulation)
+
+
             ///var employeesToReturn = employees.Select(E => new EmployeeDto
             ///{
             ///    Id = E.Id,
@@ -84,7 +95,7 @@ namespace DemoG03.BusinessLogic.Services.Classes
             #region Soft Delete
             employee.IsDeleted = true;
             var Result = _employeeRepository.Update(employee);
-            return Result > 0 ? true : false; 
+            return Result > 0 ? true : false;
             #endregion
 
             ///Hard Delete

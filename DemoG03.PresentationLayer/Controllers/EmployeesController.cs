@@ -114,6 +114,7 @@ namespace DemoG03.PresentationLayer.Controllers
         }
 
         [HttpPost]
+        //[ValidateAntiForgeryToken] // ActionFilter
         public IActionResult Delete([FromRoute] int? id)
         {
             if (id is null) return BadRequest();//400
