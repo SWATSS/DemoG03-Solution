@@ -80,11 +80,58 @@ namespace DemoG03.PresentationLayer.Controllers
                 PhoneNumber = employee.PhoneNumber,
                 Email = employee.Email,
                 Salary = employee.Salary,
-                IsActive=employee.IsActive,
+                IsActive = employee.IsActive,
                 HiringDate = employee.HiringDate,
                 Gender = Enum.Parse<Gender>(employee.Gender),
                 EmployeeType = Enum.Parse<EmployeeType>(employee.EmployeeType)
             });
+        }
+        [HttpPost]
+        public IActionResult Edit([FromRoute] int? id, UpdatedEmployeeDto employeeDto)
+        {
+            if (id is null || id != employeeDto.Id) return BadRequest();
+            if (!ModelState.IsValid)
+            {
+                return View(employeeDto);
+            }
+            try
+            {
+                var Result = _employeeService.UpdateEmployee(employeeDto);
+                if (Result > 0) return RedirectToAction(nameof(Index));
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Employee Is Not Updated");
+                }
+            }
+            catch (Exception ex)
+            {
+                if (_env.IsDevelopment()) ModelState.AddModelError(string.Empty, ex.Message);
+                else
+                    _logger.LogError(ex.Message);
+            }
+            return View(employeeDto);
+
+        }
+
+        [HttpPost]
+        public IActionResult Delete([FromRoute] int? id)
+        {
+            if (id is null) return BadRequest();//400
+            try
+            {
+                var result = _employeeService.DeleteEmployee(id.Value);
+                if (result)
+                    return RedirectToAction(nameof(Index));
+                else
+                    _logger.LogError("Employee Can't Be Deleted");
+            }
+            catch (Exception ex)
+            {
+                if (_env.IsDevelopment()) ModelState.AddModelError(string.Empty, ex.Message);
+                else
+                    _logger.LogError(ex.Message);
+            }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
