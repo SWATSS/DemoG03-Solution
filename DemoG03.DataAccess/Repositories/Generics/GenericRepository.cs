@@ -26,11 +26,11 @@ namespace DemoG03.DataAccess.Repositories.Generics
         {
             if (WithTracking)
             {
-                return _dbContext.Set<TEntity>().ToList();
+                return _dbContext.Set<TEntity>().Where(T => T.IsDeleted != true).ToList();
             }
             else
             {
-                return _dbContext.Set<TEntity>().AsNoTracking().ToList();
+                return _dbContext.Set<TEntity>().Where(T => T.IsDeleted != true).AsNoTracking().ToList();
             }
         }
 

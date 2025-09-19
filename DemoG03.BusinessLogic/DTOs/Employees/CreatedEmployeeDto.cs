@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace DemoG03.BusinessLogic.DTOs.Employees
 {
-    public class CreatedEmplyeeDto
+    public class CreatedEmployeeDto
     {
         [Required(ErrorMessage = "XX")]
         [MaxLength(50, ErrorMessage = "Name Should Be Less Than 50 Chars")]

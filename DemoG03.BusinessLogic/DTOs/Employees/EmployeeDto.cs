@@ -18,8 +18,8 @@ namespace DemoG03.BusinessLogic.DTOs.Employees
         public bool IsActive { get; set; }
         [EmailAddress]
         public string? Email { get; set; }
-        public string Gender { get; set; } = null!;
+        public string EmpGender { get; set; } = null!;
         [Display(Name = "Employee Type")]
-        public string EmployeeType { get; set; } = null!;
+        public string EmpType { get; set; } = null!;
     }
 }
