@@ -22,9 +22,20 @@ namespace DemoG03.BusinessLogic.Services.Classes
             _mapper = mapper;
         }
 
-        public IEnumerable<EmployeeDto> GetAllEmployees(bool withTracking = false)
+        public IEnumerable<EmployeeDto> GetAllEmployees(string? EmployeeSearchName, bool withTracking = false)
         {
-            var employees = _employeeRepository.GetAll(withTracking);
+            //var employees = _employeeRepository.GetAll(withTracking);
+            //.Where(E => E.Name.ToLower().Contains(EmployeeSearchName.ToLower()));
+            IEnumerable<Employee> employees;
+            if (string.IsNullOrWhiteSpace(EmployeeSearchName))
+            {
+                employees = _employeeRepository.GetAll(withTracking);
+            }
+            else
+            {
+                employees = _employeeRepository.GetAll(E => E.Name.ToLower().Contains(EmployeeSearchName.ToLower()));
+            }
+
             var employeesToReturn = _mapper.Map<IEnumerable<Employee>, IEnumerable<EmployeeDto>>(employees);
 
             ///var employees = _employeeRepository.GetAll(E => new EmployeeDto()

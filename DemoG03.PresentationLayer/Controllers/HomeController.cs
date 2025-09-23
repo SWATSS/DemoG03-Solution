@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using DemoG03.PresentationLayer.Models;
+using DemoG03.PresentationLayer.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DemoG03.PresentationLayer.Controllers

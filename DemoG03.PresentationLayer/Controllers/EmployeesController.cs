@@ -1,6 +1,8 @@
 ﻿using DemoG03.BusinessLogic.DTOs.Employees;
 using DemoG03.BusinessLogic.Services.Interfaces;
+using DemoG03.DataAccess.Models.Departments;
 using DemoG03.DataAccess.Models.Employees;
+using DemoG03.PresentationLayer.ViewModels.Employees;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
@@ -20,24 +22,39 @@ namespace DemoG03.PresentationLayer.Controllers
             _logger = logger;
             _env = env;
         }
-        public IActionResult Index()
+        public IActionResult Index(string? EmployeeSearchName)
         {
-            var employees = _employeeService.GetAllEmployees();
+            var employees = _employeeService.GetAllEmployees(EmployeeSearchName);
             return View(employees);
         }
         [HttpGet]
+        //public IActionResult Create([FromServices]IDepartmentServices departmentServices)//Depandancy Injection
         public IActionResult Create()
         {
+            //ViewData["Departments"] = departmentServices.GetAllDepartments();
             return View();
         }
         [HttpPost]
-        public IActionResult Create(CreatedEmployeeDto employeeDto)
+        public IActionResult Create(EmployeeViewModel employeeVM)
         {
             //Server-Side Validation
             if (ModelState.IsValid)
             {
                 try
                 {
+                    var employeeDto = new CreatedEmployeeDto()
+                    {
+                        Name = employeeVM.Name,
+                        Address = employeeVM.Address,
+                        Age = employeeVM.Age,
+                        Email = employeeVM.Email,
+                        EmployeeType = employeeVM.EmployeeType,
+                        Gender = employeeVM.Gender,
+                        HiringDate = employeeVM.HiringDate,
+                        IsActive = employeeVM.IsActive,
+                        PhoneNumber = employeeVM.PhoneNumber,
+                        Salary = employeeVM.Salary
+                    };
                     var Result = _employeeService.CreateEmployee(employeeDto);
                     if (Result > 0) return RedirectToAction(nameof(Index));
                     else
@@ -53,7 +70,7 @@ namespace DemoG03.PresentationLayer.Controllers
                         _logger.LogError(ex.Message);
                 }
             }
-            return View(employeeDto);
+            return View(employeeVM);
         }
         [HttpGet]
         public IActionResult Details(int? id)
@@ -64,6 +81,7 @@ namespace DemoG03.PresentationLayer.Controllers
             return View(employee);
         }
 
+        #region Edit
         [HttpGet]
         public IActionResult Edit(int? id)
         {
@@ -71,9 +89,8 @@ namespace DemoG03.PresentationLayer.Controllers
             var employee = _employeeService.GetEmployeeById(id.Value);
             if (employee is null) return NotFound();// 404
 
-            return View(new UpdatedEmployeeDto()
+            return View(new EmployeeViewModel()
             {
-                Id = employee.Id,
                 Name = employee.Name,
                 Address = employee.Address,
                 Age = employee.Age,
@@ -83,35 +100,51 @@ namespace DemoG03.PresentationLayer.Controllers
                 IsActive = employee.IsActive,
                 HiringDate = employee.HiringDate,
                 Gender = Enum.Parse<Gender>(employee.Gender),
-                EmployeeType = Enum.Parse<EmployeeType>(employee.EmployeeType)
+                EmployeeType = Enum.Parse<EmployeeType>(employee.EmployeeType),
+                DepartmentId = employee.DepartmentId
             });
         }
         [HttpPost]
-        public IActionResult Edit([FromRoute] int? id, UpdatedEmployeeDto employeeDto)
+        public IActionResult Edit([FromRoute] int? id, EmployeeViewModel employeeVM)
         {
-            if (id is null || id != employeeDto.Id) return BadRequest();
-            if (!ModelState.IsValid)
+            if (id is null) return BadRequest();
+            if (ModelState.IsValid)
             {
-                return View(employeeDto);
-            }
-            try
-            {
-                var Result = _employeeService.UpdateEmployee(employeeDto);
-                if (Result > 0) return RedirectToAction(nameof(Index));
-                else
+                try
                 {
-                    ModelState.AddModelError(string.Empty, "Employee Is Not Updated");
+                    var employeeDto = new UpdatedEmployeeDto()
+                    {
+                        Id = id.Value,
+                        Name = employeeVM.Name,
+                        Address = employeeVM.Address,
+                        Salary = employeeVM.Salary,
+                        IsActive = employeeVM.IsActive,
+                        PhoneNumber = employeeVM.PhoneNumber,
+                        Email = employeeVM.Email,
+                        HiringDate = employeeVM.HiringDate,
+                        Age = employeeVM.Age,
+                        EmployeeType = employeeVM.EmployeeType,
+                        Gender = employeeVM.Gender,
+                        DepartmentId = employeeVM.DepartmentId
+                    };
+                    var Result = _employeeService.UpdateEmployee(employeeDto);
+                    if (Result > 0) return RedirectToAction(nameof(Index));
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, "Employee Is Not Updated");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    if (_env.IsDevelopment()) ModelState.AddModelError(string.Empty, ex.Message);
+                    else
+                        _logger.LogError(ex.Message);
                 }
             }
-            catch (Exception ex)
-            {
-                if (_env.IsDevelopment()) ModelState.AddModelError(string.Empty, ex.Message);
-                else
-                    _logger.LogError(ex.Message);
-            }
-            return View(employeeDto);
+            return View(employeeVM);
 
-        }
+        } 
+        #endregion
 
         [HttpPost]
         //[ValidateAntiForgeryToken] // ActionFilter

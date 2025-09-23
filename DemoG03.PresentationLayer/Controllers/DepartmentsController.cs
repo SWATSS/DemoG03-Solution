@@ -2,7 +2,7 @@
 using DemoG03.BusinessLogic.DTOs.Departments;
 using DemoG03.BusinessLogic.Services.Interfaces;
 using DemoG03.DataAccess.Models;
-using DemoG03.PresentationLayer.Models.Departments;
+using DemoG03.PresentationLayer.ViewModels.Departments;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DemoG03.PresentationLayer.Controllers
@@ -20,34 +20,50 @@ namespace DemoG03.PresentationLayer.Controllers
         }
         public IActionResult Index()
         {
+            ViewData["Message"] = new DepartmentDto() { Name = "Hello From ViewData" };
+            ViewBag.Message = new DepartmentDto() { Name = "Hello From ViewBag" };
             var departments = _departmentServices.GetAllDepartments();
             return View(departments);
         }
+        #region Create
         public IActionResult Create()
         {
             return View();
         }
         [HttpPost]
-        public IActionResult Create(CreatedDepartmentDto departmentDto)
+        public IActionResult Create(DepartmentViewModel departmentVM)
         {
             if (!ModelState.IsValid)
             {
-                return View(departmentDto);
+                return View(departmentVM);
             }
             var message = string.Empty;
             try
             {
+                var departmentDto = new CreatedDepartmentDto()
+                {
+                    Name = departmentVM.Name,
+                    Code = departmentVM.Code,
+                    Description = departmentVM.Description,
+                    DateOfCreation = departmentVM.DateofCreation
+                };
                 var result = _departmentServices.AddDepartment(departmentDto);
                 if (result > 0)
-                {
-                    return View("Index");
-                }
+                    message = "Department Created Successfully";
                 else
-                {
-                    message = "Department Cannot be Created";
-                    ModelState.AddModelError(string.Empty, message);
-                    return View(departmentDto);
-                }
+                    message = "Department Can't Be Created Now, Try Later";
+                TempData["Message"] = message;
+                return RedirectToAction(nameof(Index));
+                //if (result > 0)
+                //{
+                //    return View("Index");
+                //}
+                //else
+                //{
+                //    message = "Department Cannot be Created";
+                //    ModelState.AddModelError(string.Empty, message);
+                //    return View(departmentVM);
+                //}
             }
             catch (Exception ex)
             {
@@ -57,7 +73,7 @@ namespace DemoG03.PresentationLayer.Controllers
 
                 {
                     message = ex.Message;
-                    return View(departmentDto);
+                    return View(departmentVM);
                 }
                 else
 
@@ -68,6 +84,7 @@ namespace DemoG03.PresentationLayer.Controllers
             }
         }
 
+        #endregion
         [HttpGet]
         // baseUrl/Department/Details/{Id}
         public IActionResult Details(int? id)

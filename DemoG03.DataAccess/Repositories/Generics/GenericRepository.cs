@@ -40,6 +40,12 @@ namespace DemoG03.DataAccess.Repositories.Generics
             return _dbContext.Set<TEntity>().Where(E => E.IsDeleted != true).Select(selector).ToList(); // Tolist (Encapsulation) so it will run here not outside the repo
         }
 
+        public IEnumerable<TEntity> GetAll(Expression<Func<TEntity, bool>> predicate)
+        {
+            return _dbContext.Set<TEntity>().Where(predicate).ToList();
+        }
+
+
         public TEntity? GetById(int id)
         {
             return _dbContext.Set<TEntity>().Find(id);// Search First In Memory if theres nothing It Will go to database to Search
@@ -63,6 +69,7 @@ namespace DemoG03.DataAccess.Repositories.Generics
             _dbContext.Remove(entity);
             return _dbContext.SaveChanges();
         }
+
 
     }
 }
