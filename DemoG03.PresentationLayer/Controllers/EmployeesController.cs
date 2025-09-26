@@ -102,8 +102,8 @@ namespace DemoG03.PresentationLayer.Controllers
                 HiringDate = employee.HiringDate,
                 Gender = Enum.Parse<Gender>(employee.Gender),
                 EmployeeType = Enum.Parse<EmployeeType>(employee.EmployeeType),
-                DepartmentId = employee.DepartmentId,
-                Image = employee.Image
+                DepartmentId = employee.DepartmentId
+                //Image = employee.Image
             });
         }
         [HttpPost]
