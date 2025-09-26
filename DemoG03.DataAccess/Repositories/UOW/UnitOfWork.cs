@@ -1,6 +1,7 @@
 ﻿using DemoG03.DataAccess.Data.Contexts;
 using DemoG03.DataAccess.Repositories.Departments;
 using DemoG03.DataAccess.Repositories.Employees;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,6 +26,10 @@ namespace DemoG03.DataAccess.Repositories.UOW
         public IEmployeeRepository EmployeeRepository => _employeeRepository.Value;
 
         public IDepartmentRepository DepartmentRepository => _departmentRepository.Value;
+        public void Detach<TEntity>(TEntity entity) where TEntity : class
+        {
+            _dbContex.Entry(entity).State = EntityState.Detached;
+        }
 
         public int SaveChanges()
         {

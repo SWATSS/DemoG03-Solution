@@ -31,7 +31,8 @@ namespace DemoG03.BusinessLogic.Services.Classes
             var folderPath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot", "Files", folderName);
 
             // 4. Get File Name (Make File Name Unique) [with Guid
-            var fileName = $"{Guid.NewGuid()}_{file.FileName}";
+            var fileFileName = file.FileName.Length > 10 ? file.FileName.Substring(0, 10) : file.FileName; // to not get an exception bc the longNames
+            var fileName = $"{Guid.NewGuid()}_{fileFileName}{extension}";
 
             // 5. Get File Path
             var filePath = Path.Combine(folderPath, fileName);

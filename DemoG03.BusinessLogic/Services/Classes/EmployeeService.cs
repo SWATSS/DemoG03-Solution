@@ -114,6 +114,8 @@ namespace DemoG03.BusinessLogic.Services.Classes
 
                 _attachmentService.Delete(Path.Combine(folderPath, oldImageName));
             }
+            // Fix For => [The instance of entity type 'Employee' cannot be tracked because another instance with the same key value for {'Id'} is already being tracked. When attaching existing entities, ensure that only one entity instance with a given key value is attached. Consider using 'DbContextOptionsBuilder.EnableSensitiveDataLogging' to see the conflicting key values.]
+            _unitOfWork.Detach(oldEmployee);
 
             var employee = _mapper.Map<Employee>(employeeDto);
             if (employeeDto.Image is not null)

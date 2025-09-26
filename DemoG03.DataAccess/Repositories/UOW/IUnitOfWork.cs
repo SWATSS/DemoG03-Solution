@@ -14,5 +14,8 @@ namespace DemoG03.DataAccess.Repositories.UOW
         public IDepartmentRepository DepartmentRepository { get; }
 
         public int SaveChanges();
+
+        void Detach<TEntity>(TEntity entity) where TEntity : class;
+
     }
 }
