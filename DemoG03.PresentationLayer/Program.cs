@@ -4,6 +4,7 @@ using DemoG03.BusinessLogic.Services.Interfaces;
 using DemoG03.DataAccess.Data.Contexts;
 using DemoG03.DataAccess.Repositories.Departments;
 using DemoG03.DataAccess.Repositories.Employees;
+using DemoG03.DataAccess.Repositories.UOW;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -33,7 +34,8 @@ namespace DemoG03.PresentationLayer
             builder.Services.AddScoped<IDepartmentServices, DepartmentServices>();
             builder.Services.AddScoped<IEmployeeService, EmployeeService>();
             builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<IAttachmentService, AttachmentService>();
             builder.Services.AddAutoMapper(M => M.AddProfile(new MappingProfiles()));
             #endregion
 

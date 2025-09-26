@@ -52,22 +52,19 @@ namespace DemoG03.DataAccess.Repositories.Generics
         }
 
         //Insert
-        public int Add(TEntity entity)
+        public void Add(TEntity entity)
         {
             _dbContext.Set<TEntity>().Add(entity);
-            return _dbContext.SaveChanges();
         }
         //Update
-        public int Update(TEntity entity)
+        public void Update(TEntity entity)
         {
             _dbContext.Update(entity);
-            return _dbContext.SaveChanges();
         }
         //Remove
-        public int Remove(TEntity entity)
+        public void Remove(TEntity entity)
         {
             _dbContext.Remove(entity);
-            return _dbContext.SaveChanges();
         }
 
 

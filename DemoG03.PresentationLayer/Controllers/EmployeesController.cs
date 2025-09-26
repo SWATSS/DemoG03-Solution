@@ -53,7 +53,8 @@ namespace DemoG03.PresentationLayer.Controllers
                         HiringDate = employeeVM.HiringDate,
                         IsActive = employeeVM.IsActive,
                         PhoneNumber = employeeVM.PhoneNumber,
-                        Salary = employeeVM.Salary
+                        Salary = employeeVM.Salary,
+                        Image = employeeVM.Image
                     };
                     var Result = _employeeService.CreateEmployee(employeeDto);
                     if (Result > 0) return RedirectToAction(nameof(Index));
@@ -101,7 +102,8 @@ namespace DemoG03.PresentationLayer.Controllers
                 HiringDate = employee.HiringDate,
                 Gender = Enum.Parse<Gender>(employee.Gender),
                 EmployeeType = Enum.Parse<EmployeeType>(employee.EmployeeType),
-                DepartmentId = employee.DepartmentId
+                DepartmentId = employee.DepartmentId,
+                Image = employee.Image
             });
         }
         [HttpPost]
@@ -125,7 +127,8 @@ namespace DemoG03.PresentationLayer.Controllers
                         Age = employeeVM.Age,
                         EmployeeType = employeeVM.EmployeeType,
                         Gender = employeeVM.Gender,
-                        DepartmentId = employeeVM.DepartmentId
+                        DepartmentId = employeeVM.DepartmentId,
+                        Image = employeeVM.Image
                     };
                     var Result = _employeeService.UpdateEmployee(employeeDto);
                     if (Result > 0) return RedirectToAction(nameof(Index));
@@ -143,7 +146,7 @@ namespace DemoG03.PresentationLayer.Controllers
             }
             return View(employeeVM);
 
-        } 
+        }
         #endregion
 
         [HttpPost]

@@ -1,4 +1,5 @@
 ﻿using DemoG03.DataAccess.Models.Employees;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -32,5 +33,6 @@ namespace DemoG03.BusinessLogic.DTOs.Employees
         public DateOnly HiringDate { get; set; }
         public Gender Gender { get; set; }
         public EmployeeType EmployeeType { get; set; }
+        public IFormFile? Image { get; set; }
     }
 }

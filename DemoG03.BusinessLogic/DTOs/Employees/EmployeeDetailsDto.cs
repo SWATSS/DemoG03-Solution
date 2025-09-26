@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -27,6 +28,7 @@ namespace DemoG03.BusinessLogic.DTOs.Employees
         public int? DepartmentId { get; set; }
         [Display(Name = "Department")]
         public string? DepartmentName { get; set; }
+        public IFormFile? Image { get; set; }
 
     }
 }
