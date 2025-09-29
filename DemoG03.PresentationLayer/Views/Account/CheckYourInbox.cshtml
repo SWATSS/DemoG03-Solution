@@ -1,0 +1,15 @@
+﻿@model ForgetPasswordViewModel
+@{
+    ViewData["Title"] = "CheckYourInbox";
+    Layout = "~/Views/Shared/_AuthLayout.cshtml";
+    var mailProvider = Model.Email.Split('@').Last();
+}
+
+<h1>CheckYourInbox</h1>
+
+<div class="main-agileinfo">
+    <div class="agileits-top">
+        <p>Please Check Your Inbox</p>
+        <p><a href="https://@mailProvider" target="_blank">Go To Your Inbox</a></p>
+    </div>
+</div>

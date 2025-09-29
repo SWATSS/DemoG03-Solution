@@ -3,10 +3,12 @@ using DemoG03.BusinessLogic.DTOs.Departments;
 using DemoG03.BusinessLogic.Services.Interfaces;
 using DemoG03.DataAccess.Models;
 using DemoG03.PresentationLayer.ViewModels.Departments;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DemoG03.PresentationLayer.Controllers
 {
+    [Authorize]
     public class DepartmentsController : Controller
     {
         private readonly IDepartmentServices _departmentServices;

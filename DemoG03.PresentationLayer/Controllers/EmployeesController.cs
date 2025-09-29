@@ -3,11 +3,13 @@ using DemoG03.BusinessLogic.Services.Interfaces;
 using DemoG03.DataAccess.Models.Departments;
 using DemoG03.DataAccess.Models.Employees;
 using DemoG03.PresentationLayer.ViewModels.Employees;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.DotNet.Scaffolding.Shared.Messaging;
 
 namespace DemoG03.PresentationLayer.Controllers
 {
+    [Authorize]
     public class EmployeesController : Controller
     {
         private readonly IEmployeeService _employeeService;
