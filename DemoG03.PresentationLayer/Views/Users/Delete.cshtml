@@ -1,0 +1,66 @@
+﻿@model UsersViewModel
+@{
+    ViewData["Title"] = "Delete";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var FullName = string.Concat(Model.FName, ' ', Model.LName);
+}
+
+<h1>Delete</h1>
+<div class="tab-pane fade show active mt-5 p-4 border" id="general" role="tabpanel" aria-labelledby="general-tab">
+    <h1 class="mb-5">Are You Sure You Want To Delete @FullName !?</h1>
+
+    <div class="row">
+        <div asp-validation-summary="All"></div>
+
+        <div class="form-group mb-3">
+            <label class="form-label" asp-for="id"></label>
+            <input asp-for="id" class="form-control" readonly />
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label" asp-for="FName"></label>
+            <input asp-for="FName" class="form-control" readonly />
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label" asp-for="LName"></label>
+            <input asp-for="LName" class="form-control" readonly />
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label" asp-for="PhoneNumber"></label>
+            <input asp-for="PhoneNumber" class="form-control" readonly />
+        </div>
+        <div class="form-group mb-3">
+            <label class="form-label" asp-for="Email"></label>
+            <input asp-for="Email" class="form-control" readonly />
+        </div>
+
+        <div class="mt-4">
+            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@Model.id">
+                <i class="fas fa-trash"></i> Delete
+            </button>
+
+            <!-- Delete Modal -->
+            <div class="modal fade" id="deleteModal-@Model.id" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h1 class="modal-title fs-5" id="exampleModalLabel">Delete User</h1>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            Are You Sure to Delete this User @Model.FName?
+                        </div>
+                        <div class="modal-footer">
+                            <form asp-action="DeleteConfirm" asp-route-id="@Model.id" method="post">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <input type="submit" value="Delete" class="btn btn-danger" />
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <h5 class="d-inline">|</h5>
+            <a asp-action="Index" class="btn btn-outline-dark">Back To list</a>
+        </div>
+    </div>
+</div>
