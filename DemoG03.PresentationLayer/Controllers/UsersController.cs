@@ -1,10 +1,12 @@
 ﻿using DemoG03.DataAccess.Models.IdentityModels;
 using DemoG03.PresentationLayer.ViewModels.Users;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DemoG03.PresentationLayer.Controllers
 {
+    [Authorize]
     public class UsersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
@@ -139,7 +141,7 @@ namespace DemoG03.PresentationLayer.Controllers
                 }
             }
             return View();
-        } 
+        }
         #endregion
     }
 }
