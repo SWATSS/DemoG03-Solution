@@ -1,4 +1,4 @@
-﻿@model CreateRoleViewModel
+﻿@* @model CreateRoleViewModel *@
 @{
     ViewData["Title"] = "Create";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,10 +13,14 @@
     <div class="row">
         @* <div asp-validation-summary="All"></div> *@
         <form asp-action="Create" method="post" enctype="multipart/form-data">
-            <div class="form-group mb-3 ">
+@*             <div class="form-group mb-3 ">
                 <label class="form-label" asp-for="RoleName"></label>
                 <input asp-for="RoleName" class="form-control" />
                 <span class="alert-danger" asp-validation-for="RoleName"></span>
+            </div> *@
+            <div class="form-group mb-3 ">
+                <label class="form-label" name="RoleName"></label>
+                <input name="RoleName" class="form-control" required />
             </div>
 
             <div class="mt-4">

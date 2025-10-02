@@ -9,7 +9,7 @@ using System.Data;
 
 namespace DemoG03.PresentationLayer.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class RolesController : Controller
     {
         private readonly RoleManager<IdentityRole> _roleManager;
@@ -17,6 +17,7 @@ namespace DemoG03.PresentationLayer.Controllers
         {
             _roleManager = roleManager;
         }
+
         #region Create
         [HttpGet]
         public IActionResult Create()
@@ -24,15 +25,15 @@ namespace DemoG03.PresentationLayer.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(CreateRoleViewModel viewModel)
+        public IActionResult Create(string RoleName)
         {
-            if (!ModelState.IsValid) return View(viewModel);
-            var exist = _roleManager.FindByNameAsync(viewModel.RoleName).Result;
+            if (!ModelState.IsValid) return View(RoleName);
+            var exist = _roleManager.FindByNameAsync(RoleName).Result;
             if (exist is null)
             {
                 var result = _roleManager.CreateAsync(new IdentityRole
                 {
-                    Name = viewModel.RoleName,
+                    Name = RoleName
                 }).Result;
                 if (result.Succeeded)
                 {
@@ -51,8 +52,38 @@ namespace DemoG03.PresentationLayer.Controllers
             {
                 ModelState.AddModelError(string.Empty, "Name Is Used");
             }
-            return View(viewModel);
+            return View(RoleName);
         }
+        /// With ViewModel (not Efficiency)
+        ///public IActionResult Create(CreateRoleViewModel viewModel)
+        ///{
+        ///    if (!ModelState.IsValid) return View(viewModel);
+        ///    var exist = _roleManager.FindByNameAsync(viewModel.RoleName).Result;
+        ///    if (exist is null)
+        ///    {
+        ///        var result = _roleManager.CreateAsync(new IdentityRole
+        ///        {
+        ///            Name = viewModel.RoleName,
+        ///        }).Result;
+        ///        if (result.Succeeded)
+        ///        {
+        ///            TempData["Message"] = "Created Successfully";
+        ///            return RedirectToAction(nameof(Index));
+        ///        }
+        ///        else
+        ///        {
+        ///            foreach (var error in result.Errors)
+        ///            {
+        ///                ModelState.AddModelError(string.Empty, error.Description);
+        ///            }
+        ///        }
+        ///    }
+        ///    else
+        ///    {
+        ///        ModelState.AddModelError(string.Empty, "Name Is Used");
+        ///    }
+        ///    return View(viewModel);
+        ///}
         #endregion
 
         #region GetAll
