@@ -1,6 +1,7 @@
 ﻿using DemoG03.DataAccess.Models.IdentityModels;
 using DemoG03.PresentationLayer.Utilities;
 using DemoG03.PresentationLayer.ViewModels.Account;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
@@ -111,6 +112,7 @@ namespace DemoG03.PresentationLayer.Controllers
         #endregion
 
         #region LogOut
+        [Authorize]
         public IActionResult LogOut()
         {
             _signInManager.SignOutAsync().GetAwaiter().GetResult();// handel Async
@@ -204,6 +206,11 @@ namespace DemoG03.PresentationLayer.Controllers
                 }
             }
             return View(viewModel);
+        }
+
+        public IActionResult AccessDenied()
+        {
+            return View();
         }
     }
 }

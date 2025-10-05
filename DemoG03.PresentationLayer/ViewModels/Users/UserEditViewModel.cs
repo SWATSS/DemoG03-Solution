@@ -12,5 +12,6 @@ namespace DemoG03.PresentationLayer.ViewModels.Users
         [DisplayName("Phone Number")]
         [Phone]
         public string PhoneNumber { get; set; }
+        public IEnumerable<string> Roles { get; set; }
     }
 }

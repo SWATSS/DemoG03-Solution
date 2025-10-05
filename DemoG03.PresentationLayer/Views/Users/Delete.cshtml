@@ -10,29 +10,7 @@
     <h1 class="mb-5">Are You Sure You Want To Delete @FullName !?</h1>
 
     <div class="row">
-        <div asp-validation-summary="All"></div>
-
-        <div class="form-group mb-3">
-            <label class="form-label" asp-for="id"></label>
-            <input asp-for="id" class="form-control" readonly />
-        </div>
-        <div class="form-group mb-3">
-            <label class="form-label" asp-for="FName"></label>
-            <input asp-for="FName" class="form-control" readonly />
-        </div>
-        <div class="form-group mb-3">
-            <label class="form-label" asp-for="LName"></label>
-            <input asp-for="LName" class="form-control" readonly />
-        </div>
-        <div class="form-group mb-3">
-            <label class="form-label" asp-for="PhoneNumber"></label>
-            <input asp-for="PhoneNumber" class="form-control" readonly />
-        </div>
-        <div class="form-group mb-3">
-            <label class="form-label" asp-for="Email"></label>
-            <input asp-for="Email" class="form-control" readonly />
-        </div>
-
+        <partial name="PartialViews/DetailsDeletePartialView"/>
         <div class="mt-4">
             <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal-@Model.id">
                 <i class="fas fa-trash"></i> Delete
@@ -50,7 +28,7 @@
                             Are You Sure to Delete this User @Model.FName?
                         </div>
                         <div class="modal-footer">
-                            <form asp-action="DeleteConfirm" asp-route-id="@Model.id" method="post">
+                            <form asp-action="Delete" asp-route-id="@Model.id" method="post">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 <input type="submit" value="Delete" class="btn btn-danger" />
                             </form>

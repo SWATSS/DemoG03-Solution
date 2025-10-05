@@ -1,0 +1,54 @@
+﻿@model List<UserInRoleViewModel>
+
+@{
+    ViewData["Title"] = "AddOrRemoveUsers";
+    var RoleId = ViewData["RoleId"] as string;
+}
+
+<style>
+    .user-card {
+        transition: all 0.2s ease-in-out;
+        border: 2px solid transparent;
+        cursor: pointer;
+    }
+
+        .user-card:hover {
+            border-color: #0d6efd;
+            box-shadow: 0 0 10px rgba(13, 110, 253, 0.2);
+        }
+        /* لما يتعمل تشيك */
+        .user-card input:checked + .card-body {
+            background-color: #d1e7dd; /* أخضر فاتح */
+            border-radius: 0.5rem;
+            font-weight: bold;
+            color: #0f5132;
+            border: 2px solid #198754;
+        }
+</style>
+
+<div class="tab-pane fade show active mt-5 p-4 border" id="general" role="tabpanel" aria-labelledby="general-tab">
+
+    <form asp-action="AddOrRemoveUsers" asp-route-roleId="@RoleId">
+        <div class="row g-3">
+            @for (int i = 0; i < Model.Count; i++)
+            {
+                <div class="col-md-3">
+                    <label class="card shadow-sm rounded-3 h-100 user-card">
+                        <input asp-for="@Model[i].IsSelected" class="d-none" />
+                        <div class="card-body text-center">
+                            <span class="fw-semibold">@Model[i].UserName</span>
+                        </div>
+                    </label>
+
+                    <input type="hidden" asp-for="@Model[i].UserId" />
+                    <input type="hidden" asp-for="@Model[i].UserName" />
+                </div>
+            }
+        </div>
+
+        <div class="mt-4">
+            <input type="submit" value="Update" class="btn btn-success px-4 me-2" />
+            <a asp-action="Edit" asp-route-id="@RoleId" class="btn btn-light px-4">Cancel</a>
+        </div>
+    </form>
+</div>

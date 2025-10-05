@@ -10,14 +10,7 @@
     <h1 class="mb-5">@Model.Name Role Details</h1>
 
     <div class="row">
-        <div class="form-group mb-3 ">
-            <label class="form-label" asp-for="Id"></label>
-            <input asp-for="Id" class="form-control" readonly />
-        </div>
-        <div class="form-group mb-3 ">
-            <label class="form-label" asp-for="Name"></label>
-            <input asp-for="Name" class="form-control" readonly />
-        </div>
+        <partial name="PartialViews/DetailsDeletePartialView" />
 
     </div>
     <div class="mt-4">

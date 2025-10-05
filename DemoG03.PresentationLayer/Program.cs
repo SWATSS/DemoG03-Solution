@@ -53,7 +53,12 @@ namespace DemoG03.PresentationLayer
                     options.Lockout.MaxFailedAccessAttempts = 5;
                 }).AddEntityFrameworkStores<ApplicationDbContext>()
                   .AddDefaultTokenProviders(); // Token Service
-            ;
+            builder.Services.ConfigureApplicationCookie(options =>
+            {
+                options.AccessDeniedPath = "/Account/AccesssDenied";//default path
+                options.LoginPath = "/Account/LogIn";
+                options.LoginPath = "/Account/SignOut";
+            });
             #endregion
 
             var app = builder.Build();

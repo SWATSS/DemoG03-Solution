@@ -6,14 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace DemoG03.PresentationLayer.Controllers
 {
-    [Authorize]
+    [Authorize(Roles = "Admin")]
     public class UsersController : Controller
     {
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
-        public UsersController(UserManager<ApplicationUser> userManager)
+        public UsersController(UserManager<ApplicationUser> userManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
+            _roleManager = roleManager;
         }
         #region GetAll
         public IActionResult Index(string? UsersSearchName)
@@ -34,7 +36,8 @@ namespace DemoG03.PresentationLayer.Controllers
                 Email = u.Email,
                 FName = u.FirstName,
                 LName = u.LastName,
-                PhoneNumber = u.PhoneNumber
+                PhoneNumber = u.PhoneNumber,
+                Roles = _userManager.GetRolesAsync(u).Result
             }).ToList();
 
             return View(users);
@@ -42,18 +45,22 @@ namespace DemoG03.PresentationLayer.Controllers
         #endregion
 
         #region Details
-        public IActionResult Details(string? id)
+        public IActionResult Details(string? id, string viewName = "Details")
         {
-            if (id == null) return RedirectToAction(nameof(Index));
+            if (id == null) return NotFound();
             var User = _userManager.Users.FirstOrDefault(u => u.Id == id);
+            if (User.Id != id) return BadRequest();
+            var allRoles = _roleManager.Roles.ToList();
             var viewModel = new UsersViewModel
             {
                 id = User.Id,
                 FName = User.FirstName,
                 LName = User.LastName,
                 Email = User.Email,
-                PhoneNumber = User.PhoneNumber
+                PhoneNumber = User.PhoneNumber,
+                Roles = _userManager.GetRolesAsync(User).Result,
             };
+            ViewBag.AvailableRoles = allRoles;
             return View(viewModel);
         }
         #endregion
@@ -63,27 +70,29 @@ namespace DemoG03.PresentationLayer.Controllers
         [HttpGet]
         public IActionResult Edit(string id)
         {
-            var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
-            if (user is null)
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            var viewModel = new UserEditViewModel
-            {
-                FName = user.FirstName,
-                LName = user.LastName ?? "Last Name",
-                PhoneNumber = user.PhoneNumber ?? "No Number"
-            };
-            TempData["UserId"] = user.Id;
-            return View(viewModel);
+            ///var user = _userManager.Users.FirstOrDefault(x => x.Id == id);
+            ///if (user is null)
+            ///{
+            ///    return RedirectToAction(nameof(Index));
+            ///}
+            ///var viewModel = new UserEditViewModel
+            ///{
+            ///    FName = user.FirstName,
+            ///    LName = user.LastName ?? "Last Name",
+            ///    PhoneNumber = user.PhoneNumber ?? "No Number",
+            ///    Roles = _userManager.GetRolesAsync(user).Result
+            ///};
+            ///TempData["UserId"] = user.Id;
+            return Details(id, "Edit");
         }
 
         [HttpPost]
-        public IActionResult Edit(UserEditViewModel viewModel)
+        [ValidateAntiForgeryToken]
+        public IActionResult Edit([FromRoute] string? id, UsersViewModel viewModel)
         {
             if (!ModelState.IsValid) return View(viewModel);
-            var UserId = TempData["UserId"].ToString();
-            var user = _userManager.FindByIdAsync(UserId).Result;
+            //var UserId = TempData["UserId"].ToString();
+            var user = _userManager.FindByIdAsync(id).Result;
             if (user is null) return RedirectToAction(nameof(Index));
 
             user.FirstName = viewModel.FName;
@@ -93,7 +102,8 @@ namespace DemoG03.PresentationLayer.Controllers
             var result = _userManager.UpdateAsync(user).Result;
             if (result.Succeeded)
             {
-                return RedirectToAction(nameof(Details), routeValues: UserId);
+                TempData["Message"] = "Edited Succissfully";
+                return RedirectToAction(nameof(Details), routeValues: id);
             }
             else
             {
@@ -108,29 +118,35 @@ namespace DemoG03.PresentationLayer.Controllers
         [HttpGet]
         public IActionResult Delete([FromRoute] string? id)
         {
-            if (string.IsNullOrEmpty(id)) return RedirectToAction(nameof(Index));
-            var user = _userManager?.FindByIdAsync(id).Result;
-            if (user is null) return RedirectToAction(nameof(Index));
-            var vm = new UsersViewModel
-            {
-                id = user.Id,
-                FName = user.FirstName,
-                LName = user.LastName,
-                Email = user.Email,
-                PhoneNumber = user.PhoneNumber
-            };
-            return View(vm);
+            ///if (string.IsNullOrEmpty(id)) return RedirectToAction(nameof(Index));
+            ///var user = _userManager?.FindByIdAsync(id).Result;
+            ///if (user is null) return RedirectToAction(nameof(Index));
+            ///var vm = new UsersViewModel
+            ///{
+            ///    id = user.Id,
+            ///    FName = user.FirstName,
+            ///    LName = user.LastName,
+            ///    Email = user.Email,
+            ///    PhoneNumber = user.PhoneNumber,
+            ///    Roles = _userManager.GetRolesAsync(user).Result
+            ///};
+            return Details(id, "Delete");
         }
 
         //[HttpPost, ActionName("Delete")] // For Keep it With the Same Name .
         [HttpPost]
-        public IActionResult DeleteConfirm(string id)
+        [ValidateAntiForgeryToken]
+        public IActionResult Delete([FromRoute] string? id, UsersViewModel viewModel)
         {
+            if (id is null || id != viewModel.id) return BadRequest();
             var user = _userManager?.FindByIdAsync(id).Result;
-            if (user is null) return RedirectToAction(nameof(Index));
+
+            if (user is null) return NotFound();
+
             var result = _userManager.DeleteAsync(user).Result;
             if (result.Succeeded)
             {
+                TempData["Message"] = "Deleted Succissfully";
                 return RedirectToAction(nameof(Index));
             }
             else
@@ -140,6 +156,7 @@ namespace DemoG03.PresentationLayer.Controllers
                     ModelState.AddModelError(string.Empty, error.Description);
                 }
             }
+
             return View();
         }
         #endregion
