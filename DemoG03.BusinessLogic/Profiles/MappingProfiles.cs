@@ -31,6 +31,6 @@ namespace DemoG03.BusinessLogic.Profiles
 
             CreateMap<UpdatedEmployeeDto, Employee>()
                 .ForMember(dist => dist.HiringDate, options => options.MapFrom(src => src.HiringDate.ToDateTime(new TimeOnly())));
-        }
+        } 
     }
 }
